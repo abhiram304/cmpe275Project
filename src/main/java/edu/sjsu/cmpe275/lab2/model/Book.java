@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -20,8 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Book implements Serializable{
 	private static final long serialVersionUID = -9022929256211682745L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "BOOKID")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "BOOKID",  nullable = false)
 	private String bookid;
 	@Column(name = "AUTHOR")
 	private String author;
@@ -41,16 +42,16 @@ public class Book implements Serializable{
 	private String status;
 	@Column(name = "KEYWORDS")
 	private String keywords;
-	
-	
-	@ManyToOne(mappedBy ="books")
-	private List<User> users;
+	/*@ManyToOne(mappedBy="books")*/
+	 @ManyToOne(optional=false)
+     @JoinColumn(name="EMAIL",referencedColumnName="EMAIL")
+	private User user;
 	
 	public Book(){
 		super();
 	}
 	
-	public Book(String bookid, String author, String title, String callnum, String publisher, String year, String location, String copies, String status, String keywords, List<User> users) {
+	public Book(String bookid, String author, String title, String callnum, String publisher, String year, String location, String copies, String status, String keywords, User user) {
 		super();
 		this.bookid = bookid;
 		this.author = author;
@@ -62,7 +63,7 @@ public class Book implements Serializable{
 		this.copies = copies;
 		this.status = status;
 		this.keywords = keywords;
-		this.users = users;
+		this.user = user;
 	}
 	
 
@@ -178,12 +179,12 @@ public class Book implements Serializable{
 //		this.address = address;
 //	}
 
-	public List<User> getUsers() {
-		return users;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 //	@Override
