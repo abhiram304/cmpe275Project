@@ -67,6 +67,7 @@ public class HibernateConfiguration {
     public EntityManagerFactory entityManagerFactory(DataSource dataSource, Properties hibernateProperties){
         final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean  = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
+        //entityManagerFactoryBean.setPackagesToScan( "edu.sjsu.cmpe275.lab2.model" );
         entityManagerFactoryBean.setPackagesToScan( "edu.sjsu.cmpe275.lab2.dao" );
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManagerFactoryBean.setJpaProperties(hibernateProperties);

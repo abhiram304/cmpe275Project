@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name="USER")
 public class User implements Serializable{
@@ -38,7 +39,7 @@ public class User implements Serializable{
 	private int active;
 	@OneToMany
 	(mappedBy="user", targetEntity=Book.class,
-    fetch=FetchType.EAGER)
+    fetch=FetchType.LAZY)
 	/*@JoinTable(name="USERS_BOOKS", joinColumns={@JoinColumn(name="email", referencedColumnName = "EMAIL")},
 	inverseJoinColumns={@JoinColumn(name="bookId", referencedColumnName= "BOOKID")})*/
 	private List<Book> books;
@@ -76,6 +77,22 @@ public class User implements Serializable{
 
 	public String getUnivid() {
 		return univid;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public void setUnivid(String univid) {

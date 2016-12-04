@@ -16,10 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import edu.sjsu.cmpe275.lab2.dao.UserDAO;
-import edu.sjsu.cmpe275.lab2.model.Address;
-import edu.sjsu.cmpe275.lab2.model.Phone;
+
+import edu.sjsu.cmpe275.lab2.model.Book;
 import edu.sjsu.cmpe275.lab2.model.User;
-import edu.sjsu.cmpe275.lab2.service.PhoneService;
+import edu.sjsu.cmpe275.lab2.service.BookService;
 import edu.sjsu.cmpe275.lab2.service.UserService;
 
 @Controller
@@ -30,7 +30,7 @@ public class AppController {
 	private UserService userService;
 	
 	@Autowired
-	private PhoneService phoneService;
+	private BookService bookService;
 	
 	@Autowired
 	MessageSource messageSource;
@@ -41,7 +41,39 @@ public class AppController {
 		return "hello";
 	}
 	
-	@RequestMapping(value="/user/{userId}", method = RequestMethod.GET)
+	//GET USER REGISTRATION PAGE
+	@RequestMapping(value = "/userRegistration", method = RequestMethod.GET)
+	public String userRegistration(ModelMap model) {
+		model.addAttribute("message", "Hello Spring MVC Framework!");
+		return "userRegistration";
+	}
+	
+	
+	@RequestMapping(value="/userRegistration", method = RequestMethod.POST)
+	public String userRegistration(
+			@RequestParam(value="email", required=false) String email,
+			@RequestParam(value="firstName", required=false) String firstName,
+			@RequestParam(value="lastName", required=false) String lastName,			 
+			@RequestParam(value="password", required=false) String password,
+			@RequestParam(value="univid", required=false) String univid,
+			UriComponentsBuilder ucBuilder, Model model) {
+		System.out.println("In user registration post method");
+		User user = new User();
+		user.setEmail(email);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setUnivid(univid);
+		user.setUniquecode(" ");
+		user.setActive(0);
+		userService.saveUser(user);//It should return user to get id.
+		HttpHeaders headers = new HttpHeaders();
+	    //headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getUserId()).toUri());
+		model.addAttribute("headers", headers);
+		model.addAttribute("httpStatus", HttpStatus.CREATED);
+		return "activateUser";
+	}
+	
+	/*@RequestMapping(value="/user/{userId}", method = RequestMethod.GET)
 	public ModelAndView getUserById(@PathVariable("userId") String id, Model model) {
 		System.out.println("I am in createNewUser "+id);
 		ModelAndView view= new ModelAndView("hello");
@@ -51,13 +83,13 @@ public class AppController {
 		return view;
 	}
 	
-	/*@RequestMapping(value="/user/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value="/user/{userId}", method = RequestMethod.GET)
 	public String getUserById(@PathVariable("userId") String id, Model model) {
 		User user = userService.findUserById(id);
 		model.addAttribute("user", user);
 		model.addAttribute("httpStatus", HttpStatus.OK);
 		return "viewUser";
-	}*/
+	}
 	
 	@RequestMapping(value="/user", method = RequestMethod.POST)
 	public String createNewUser(@RequestParam(value="firstName", required=false) String firstName,
@@ -232,5 +264,5 @@ public class AppController {
 		model.addAttribute("httpStatus", HttpStatus.OK);
 		model.addAttribute("phoneList", phoneList);
 		return "viewPhone";
-	}
+	}*/
 }

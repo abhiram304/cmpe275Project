@@ -44,14 +44,14 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 	}
 	
 	@Bean
-	public BookDAO phoneDAO(){
+	public BookDAO bookDAO(){
 		
 		return new BookDAOImpl();
 	}
 	
 		
 	@Bean
-	public Book phone(){
+	public Book book(){
 		Book obj2=new Book();
 		return obj2;
 	}
